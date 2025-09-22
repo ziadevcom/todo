@@ -6,6 +6,9 @@
 
     <?php else : ?>
         <h1 style="text-align:center">Here are your tasks<br></br></h1>
+        <?php
+        usort($tasks, fn($a, $b) => $a['completed'] <=> $b['completed'])
+        ?>
         <div class="tasks">
             <?php foreach ($tasks as $task): ?>
                 <?php
@@ -14,14 +17,14 @@
                 $description = $task['description'];
                 $completed = (bool) $task['completed'];
                 ?>
-                <article class="task">
+                <article class="task<?= $completed ? ' completed' : '' ?>">
                     <h2><?= $title ?></h2>
                     <p><?= $description ?></p>
                     <small><b><?= $completed ? '✅ Task Completed' : '🕛 In Progress' ?></b></small>
                     <br>
                     <br>
                     <div>
-                        <button>Edit</button>
+                        <a role="button" href="/task/edit?id=<?= $id ?>">Edit</a>
                         <form action="/task/delete" method="POST">
                             <input type="hidden" name="taskId" value="<?= $id ?>">
                             <button class="red" type="submit">Delete</button>
@@ -41,9 +44,14 @@
     <?php endif; ?>
 
     <style>
-        .tasks button {
+        .tasks button,
+        .tasks a {
             width: 100% !important;
             margin-bottom: 20px;
+        }
+
+        .task.completed {
+            border-bottom: 4px solid green;
         }
 
         button.red {
@@ -54,7 +62,7 @@
 
         .tasks {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
         }
 

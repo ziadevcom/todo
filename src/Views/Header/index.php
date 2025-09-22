@@ -16,6 +16,12 @@
             --pico-font-family: 'Doto', monospace;
         }
 
+        @media (min-width: 1536px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+
         header {
             display: flex;
             justify-content: center;

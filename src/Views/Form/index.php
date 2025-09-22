@@ -29,8 +29,8 @@ $inlineErrorExists = isset($errors) && count($errors) > 0;
         $labelHTML = "<label for='$name'>$label</label>";
         ?>
         <fieldset>
-            <?php if (in_array($type, ['text', 'password', 'number', 'email'])): ?>
-                <?= $labelHTML ?>
+            <?php if (in_array($type, ['text', 'password', 'number', 'email', 'hidden'])): ?>
+                <?= $type !== 'hidden' ? $labelHTML : '' ?>
                 <input
                     type="<?= $type ?>"
                     name=<?= $name ?>
@@ -61,9 +61,9 @@ $inlineErrorExists = isset($errors) && count($errors) > 0;
                 <small id="<?= $helperId ?>"><?= $error ?? '' ?></small>
             <?php endif; ?>
 
-        <?php endforeach; ?>
         </fieldset>
-        <input type="submit" value="<?= $submit ?>">
+    <?php endforeach; ?>
+    <input type="submit" value="<?= $submit ?>">
 </form>
 
 <style>

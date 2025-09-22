@@ -31,6 +31,10 @@ $router
 
     ->get('/tasks', [App\Controllers\TaskController\TaskController::class, 'allTasks'])
 
+    ->get('/task/edit', [App\Controllers\TaskController\TaskController::class, 'editTaskUI'])
+
+    ->post('/task/edit', [App\Controllers\TaskController\TaskController::class, 'editTaskDB'])
+
     ->post('/task/delete', [App\Controllers\TaskController\TaskController::class, 'deleteTask'])
 
     ->post('/task/complete', [App\Controllers\TaskController\TaskController::class, 'completeTask']);

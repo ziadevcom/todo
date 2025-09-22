@@ -1,9 +1,16 @@
 <?php
+$taskId = $_GET['id'];
 $form = [
-    'action' => '/edit-task',
+    'action' => "/task/edit?id=$taskId",
     'method' => 'post',
     'submit' => 'Edit Task',
     'fields' => [
+        [
+            'name' => 'id',
+            'label' => 'id',
+            'value' => $id,
+            'type' => 'hidden'
+        ],
         [
             'name' => 'title',
             'label' => 'Title',

@@ -7,6 +7,7 @@ use App\Utilities\Enums\Notice;
 
 class Task
 {
+    public ?int $id;
     public string $title;
     public string $description;
     public bool $completed = false;
@@ -17,6 +18,7 @@ class Task
     public function __construct(array $postData = [])
     {
         if (!empty($postData)) {
+            $this->id = filter_var($postData['id'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
             $this->title = htmlspecialchars(trim($postData['title']));
             $this->description = htmlspecialchars(trim($postData['description']));
             $this->completed = isset($postData['completed']) && $postData['completed'] === 'on';
@@ -63,6 +65,34 @@ class Task
         return false;
     }
 
+    public function edit(): bool
+    {
+        $db = Database::connect();
+        $taskId = $this->id;
+
+        $statement = $db->prepare("UPDATE tasks SET title = :title, description = :description, completed = :completed WHERE id = :taskId");
+
+        $ok = $statement->execute([
+            ':title' => $this->title,
+            ':description' => $this->description,
+            ':completed' => (int) $this->completed,
+            ':taskId' => $taskId
+        ]);
+
+        if ($ok) {
+            $this->notice = [
+                'status' => Notice::success,
+                'message' => 'Task added successfully.'
+            ];
+            return true;
+        }
+
+        $this->notice = [
+            'status' => Notice::error,
+            'message' => 'Could not add user. Please try again.'
+        ];
+        return false;
+    }
     public function getTasks()
     {
         $userId = $_SESSION['user']['id'];
@@ -85,14 +115,14 @@ class Task
         return $statement->fetchAll();
     }
 
-    public function deleteTask(int $taskId)
+    public function delete(int $taskId)
     {
         $userId = $_SESSION['user']['id'];
         $db = Database::connect();
 
-        $statement = $db->prepare('DELETE FROM TASKS WHERE id = :taskId AND user_id = :userId');
+        $statement = $db->prepare('DELETE FROM tasks WHERE id = :taskId AND user_id = :userId');
 
-        $ok = $statement->execute([':taskId' => $taskId, 'userId' => $userId]);
+        $ok = $statement->execute([':taskId' => $taskId, ':userId' => $userId]);
 
         if (!$ok) {
             $this->notice = [
@@ -104,7 +134,7 @@ class Task
 
         return true;
     }
-    public function completeTask(int $taskId, $completedStatus)
+    public function complete(int $taskId, $completedStatus)
     {
         $userId = $_SESSION['user']['id'];
         $db = Database::connect();
@@ -122,5 +152,20 @@ class Task
         }
 
         return true;
+    }
+
+    public function getById(int $taskId)
+    {
+
+        $db = Database::connect();
+
+        $statement = $db->prepare('SELECT * FROM tasks WHERE id = :taskId');
+        $ok = $statement->execute([':taskId' => $taskId]);
+
+        if (!$ok) {
+            return false;
+        }
+
+        return $statement->fetch();
     }
 }

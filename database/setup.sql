@@ -1,11 +1,6 @@
--- Cleanslate
-
-DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS tasks;
-
 -- User Table
 
-create Table users (
+CREATE TABLE users (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	email TEXT NOT NULL,
 	name TEXT NOT NULL,
@@ -17,11 +12,11 @@ create Table users (
 
 -- Tasks Table
 
-create Table tasks(
+CREATE TABLE tasks(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	title TEXT NOT NULL,
 	description TEXT NOT NULL,
-	complete BOOLEAN DEFAULT FALSE NOT NULL,
+	completed BOOLEAN DEFAULT FALSE NOT NULL,
     created_at TEXT DEFAULT (datetime('now')),
     updated_at TEXT DEFAULT (datetime('now')),
     user_id INTEGER NOT NULL,
