@@ -47,7 +47,9 @@
         .tasks button,
         .tasks a {
             width: 100% !important;
-            margin-bottom: 20px;
+            font-size: 0.8rem !important;
+            padding: 10px;
+            margin-bottom: 1rem;
         }
 
         .task.completed {

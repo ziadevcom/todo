@@ -21,16 +21,16 @@ class LoginController
 
         if (!$isValidUser) {
             http_response_code(400);
-            View::render('/Login/index', [
+            return View::render('/Login/index', [
                 'email' => $_POST['email'],
                 'password' => $_POST['password'],
                 'errors' => $user->errors,
                 'notice' => $user->notice
             ]);
-            return;
         }
 
         $user->login();
-        header('Location: /account');
+        header('Location: /tasks');
+        exit();
     }
 }
