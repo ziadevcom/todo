@@ -31,7 +31,9 @@ $router
 
     ->get('/tasks', [App\Controllers\TaskController\TaskController::class, 'allTasks'])
 
-    ->post('/task/delete', [App\Controllers\TaskController\TaskController::class, 'deleteTask']);
+    ->post('/task/delete', [App\Controllers\TaskController\TaskController::class, 'deleteTask'])
+
+    ->post('/task/complete', [App\Controllers\TaskController\TaskController::class, 'completeTask']);
 
 
 $router->resolve();

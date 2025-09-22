@@ -27,9 +27,3 @@ $form = [
 
 
 include VIEWS_DIR . '/Form/index.php';
-
-?>
-
-<pre>
-    <?= print_r($errors) ?>;
-</pre>

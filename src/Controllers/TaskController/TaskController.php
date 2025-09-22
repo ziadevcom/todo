@@ -75,4 +75,21 @@ class TaskController
 
         View::render('<h1>Something went wrong. Go back to <a href="/tasks">tasks</a>', isView: false);
     }
+    public function completeTask()
+    {
+        $task = new Task();
+        $taskId = htmlspecialchars(trim($_POST['taskId']));
+        $completedStatus = filter_var($_POST['task_status'], FILTER_VALIDATE_INT);
+        var_dump($completedStatus);
+        if ($completedStatus === false || $completedStatus < 0 || $completedStatus > 1) {
+            http_response_code(400);
+        } elseif (!$task->completeTask($taskId, (int) $completedStatus)) {
+            http_response_code(500);
+        } else {
+            header('Location: /tasks');
+            exit();
+        }
+
+        View::render('<h1>Something went wrong. Go back to <a href="/tasks">tasks</a>', isView: false);
+    }
 }

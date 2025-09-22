@@ -104,4 +104,23 @@ class Task
 
         return true;
     }
+    public function completeTask(int $taskId, $completedStatus)
+    {
+        $userId = $_SESSION['user']['id'];
+        $db = Database::connect();
+
+        $statement = $db->prepare('UPDATE tasks SET completed = :completed WHERE id = :taskId AND user_id = :userId');
+
+        $ok = $statement->execute([':completed' => $completedStatus, ':taskId' => $taskId, 'userId' => $userId]);
+
+        if (!$ok) {
+            $this->notice = [
+                'status' => Notice::error,
+                'message' => "Something went wrong. Could not task."
+            ];
+            return false;
+        }
+
+        return true;
+    }
 }

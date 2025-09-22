@@ -20,14 +20,19 @@
                     <small><b><?= $completed ? '✅ Task Completed' : '🕛 In Progress' ?></b></small>
                     <br>
                     <br>
-                    <div role="group">
+                    <div>
                         <button>Edit</button>
                         <form action="/task/delete" method="POST">
                             <input type="hidden" name="taskId" value="<?= $id ?>">
-                            <!-- <input type='submit' class="red" value="Delete"> -->
-                            <button class="red"="submit">Delete</button>
+                            <button class="red" type="submit">Delete</button>
                         </form>
-
+                        <form action="/task/complete" method="POST">
+                            <input type="hidden" name="taskId" value="<?= $id ?>">
+                            <input type="hidden" name="task_status" value="<?= (int) !$completed ?>">
+                            <button class="contrast" type="submit">
+                                <?= $completed ? 'Mark as Incomplete' : 'Mark as Complete' ?>
+                            </button>
+                        </form>
                     </div>
                 </article>
 
@@ -36,11 +41,15 @@
     <?php endif; ?>
 
     <style>
+        .tasks button {
+            width: 100% !important;
+            margin-bottom: 20px;
+        }
+
         button.red {
             --pico-background-color: red;
             --pico-color: white;
             --pico-border-color: red;
-            width: 100% !important;
         }
 
         .tasks {

@@ -61,6 +61,6 @@ class Router
         $class = $routeResolver[0];
         $classMethod = $routeResolver[1];
 
-        new $class()->$classMethod();
+        (new $class())->$classMethod();
     }
 }
